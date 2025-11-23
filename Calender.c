@@ -14,6 +14,7 @@ typedef struct event{
 //Function Prototypes
 Event* createEvent(char* nTitle, char* nDate, char* nTime, char* nDescription, int nMonthNum);
 void browseEvents(Event* events);
+Event* removeEvent(Event* head, const char* targetName);
 
 void displayEvent(Event* event);
 
@@ -25,7 +26,8 @@ int main() {
         printf("\nCommunity Calendar Menu:\n");
         printf("1. Create Event\n");
         printf("2. Browse Events\n");
-        printf("3. Exit\n");
+        printf("3. Remove Event\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice  );
         getchar();
@@ -90,12 +92,20 @@ int main() {
                 }
                 break;
             case 3:
+                char target[100];
+                printf("Enter the name for the event: ");
+                fgets(target, sizeof(target), stdin);
+                target[strcspn(target, "\n")] = '\0';
+
+                head = removeEvent(head, target);
+                break;
+            case 4:
                 printf("Exiting calendar. Goodbye!\n");
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (choice != 3);
+    } while (choice != 4);
     return 0;
 }
 
@@ -198,4 +208,42 @@ void displayEvent(Event* event){
     printf("Event Date:%s\n", event->date);
     printf("Event Time:%s\n", event->time);
     printf("Event Description:%s\n\n", event->description);
+}
+
+Event* removeEvent(Event* head, const char* targetName) {
+    // If list is empty
+    if (head == NULL) {
+        printf("There are no events to remove.\n");
+        return head;
+    }
+
+    Event* temp = head;
+    Event* prev = NULL;
+
+    // Check if the head is the one to delete
+    if (strcmp(head->name, targetName) == 0) {
+        head = head->next;      
+        free(temp);             
+        printf("Event removed successfully.\n");
+        return head;
+    }
+
+    // Search the list for the event
+    while (temp != NULL && strcmp(temp->name, targetName) != 0) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Not found
+    if (temp == NULL) {
+        printf("Event not found.\n");
+        return head;
+    }
+
+    // Remove the event
+    prev->next = temp->next;
+    free(temp);
+
+    printf("Event removed successfully.\n");
+    return head;
 }
