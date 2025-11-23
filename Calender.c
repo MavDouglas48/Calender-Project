@@ -26,7 +26,8 @@ int main() {
         printf("\nCommunity Calendar Menu:\n");
         printf("1. Create Event\n");
         printf("2. Browse Events\n");
-        printf("3. Exit\n");
+        printf("3. Remove Event\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice  );
         getchar();
@@ -91,12 +92,20 @@ int main() {
                 }
                 break;
             case 3:
+                char target[100];
+                printf("Enter the name for the event: ");
+                fgets(target, sizeof(target), stdin);
+                target[strcspn(target, "\n")] = '\0';
+
+                head = removeEvent(head, target);
+                break;
+            case 4:
                 printf("Exiting calendar. Goodbye!\n");
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (choice != 3);
+    } while (choice != 4);
     return 0;
 }
 
