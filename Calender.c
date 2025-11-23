@@ -47,7 +47,7 @@ int main() {
                 fgets(newTitle, sizeof(newTitle), stdin);
                 newTitle[strcspn(newTitle, "\n")] = '\0';
 
-                printf("Enter the date of this event:");
+                printf("Enter the day of this event:");
                 fgets(newDate, sizeof(newDate), stdin);
                 newDate[strcspn(newDate, "\n")] = '\0';
 
